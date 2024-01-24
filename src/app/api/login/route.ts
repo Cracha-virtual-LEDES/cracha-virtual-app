@@ -2,16 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "../../../../lib/db";
 import { PasswordCrypto } from "src/service";
-import { Token } from "src/service";
+// import { Token } from "src/service";
 
 export async function GET(req: NextRequest) {}
 
 // POST /api/login
 export async function POST(req: NextRequest) {
   try {
-    const token = req.headers.get("Authorization");
+    // const token = req.headers.get("Authorization");
     const { email, password } = await req.json();
-    const user = await prisma.user.findUnique({ where: { email: email } });
+    const user = await prisma.pessoa.findUnique({ where: { email: email } });
     if (
       !user ||
       !(await PasswordCrypto.comparePassword(password, user.password))
