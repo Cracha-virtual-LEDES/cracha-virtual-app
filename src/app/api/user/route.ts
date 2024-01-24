@@ -10,10 +10,20 @@ export async function POST(req: NextRequest) {
       ...data,
       password: await PasswordCrypto.hashPassword(data.password),
     };
-    const user = await prisma.user.create({
+
+    const color = newData.color;
+
+    delete newData.color;
+
+    const user = await prisma.pessoa.create({
       data: newData,
     });
-    return NextResponse.json({ message: "OK", user }, { status: 201 });
+
+    const cracha = await prisma.cracha.create({
+      data: { color: color, pessoaId: user.id }
+    });
+
+    return NextResponse.json({ message: "OK", user , cracha}, { status: 201 });
   } catch (error) {
     return NextResponse.json({ message: "Error", error }, { status: 500 });
   }
@@ -21,7 +31,7 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   const { id } = await req?.json();
-  const user = await prisma.user.findUnique({
+  const user = await prisma.pessoa.findUnique({
     where: { id: id },
   });
   return NextResponse.json({ message: "OK", user }, { status: 200 });
