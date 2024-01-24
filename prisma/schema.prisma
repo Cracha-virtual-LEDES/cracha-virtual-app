@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Pessoa {
   id        Int     @id @default(autoincrement())
   name      String
   email     String  @unique
@@ -18,4 +18,12 @@ model User {
   isAdmin   Boolean
   photoPath String
   verified  Boolean
+  cracha    Cracha?
+}
+
+model Cracha {
+  id        Int     @id @default(autoincrement())
+  color     String
+  pessoa    Pessoa  @relation(fields: [pessoaId], references: [id])
+  pessoaId  Int     @unique
 }
