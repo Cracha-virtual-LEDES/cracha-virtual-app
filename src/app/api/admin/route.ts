@@ -13,14 +13,15 @@ export async function GET(req: NextRequest) {
         const payload = await Token.verifyJwtToken(token);  
 
         if(payload?.isAdmin){
-            const pessoas = await prisma.pessoa.findMany({
+
+            const crachas = await prisma.cracha.findMany({
                 where: {
                     verified: false
                 },
-                include: {cracha: true}
+                include: {pessoa: true}
             })
     
-            return NextResponse.json({ message: "OK", pessoas }, { status: 200 });
+            return NextResponse.json({ message: "OK", crachas }, { status: 200 });
         }else{
             return NextResponse.json({ message: "Not admin"}, { status: 403 });
         }
@@ -35,14 +36,14 @@ export async function PUT(req: NextRequest) {
 
         // TODO verificar se é admin pelo JWT
 
-        const pessoaToVerify = await req?.json();
+        const crachaToVerify = await req?.json();
 
-        const pessoa = await prisma.pessoa.update({
-            where: { id: pessoaToVerify.id },
+        const cracha = await prisma.cracha.update({
+            where: { id: crachaToVerify.id },
             data: { verified: true }
         });
 
-        return NextResponse.json({ message: "OK", pessoa}, { status: 200 });
+        return NextResponse.json({ message: "OK", cracha }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ message: "Error", error }, { status: 500 });
     }
