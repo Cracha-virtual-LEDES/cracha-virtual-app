@@ -42,7 +42,6 @@ const register = async (data: any): Promise<any> => {
   };
 
   const expirationDate = new Date();
-  expirationDate.setFullYear(expirationDate.getFullYear() + 1);
 
   const newCracha = {
     ...data.cracha,
