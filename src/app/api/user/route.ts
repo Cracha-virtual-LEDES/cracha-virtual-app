@@ -3,24 +3,10 @@ import { Authentication } from "src/service";
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json();
-    const token = await Authentication.login({ email, password });
+    const data = await req.json();
+    const user = await Authentication.register(data);
 
-    if (!token) {
-      return NextResponse.json(
-        { message: "Invalid credentials" },
-        { status: 400 }
-      );
-    }
-
-    const response = NextResponse.json({ message: "OK" }, { status: 200 });
-
-    response.cookies.set({
-      name: "token",
-      value: token,
-    });
-
-    return response;
+    return NextResponse.json({ message: "OK", user }, { status: 201 });
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
       return NextResponse.json(
