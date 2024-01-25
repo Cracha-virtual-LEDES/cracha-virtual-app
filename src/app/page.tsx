@@ -1,30 +1,51 @@
+"use client";
+
+import { useContext } from "react";
 import styles from "./page.module.css";
+import { useForm } from "react-hook-form";
+import { AuthContext } from "src/context/AuthContext";
+
+type FormInput = {
+  email: string;
+  password: string;
+};
 
 export default function Home() {
+  const { register, handleSubmit } = useForm<FormInput>();
+  const { signIn } = useContext(AuthContext);
+
+  const handleSignIn = async (data: FormInput) => {
+    await signIn(data);
+    console.log(data);
+  };
+
   return (
-    <main className={styles.main}>
+    <>
       <div className={styles.mainLogin}>
-        <div className={styles.leftLogin}>
-          <h1>
-            Faça login teste
-            <br />E entre para o nosso time
-          </h1>
-        </div>
         <div className={styles.rightLogin}>
           <div className={styles.cardLogin}>
             <h1>LOGIN</h1>
             <div className={styles.textfield}>
-              <label>Usuário</label>
-              <input type="text" name="usuario" placeholder="Usuário" />
+              <label>E-mail</label>
+              <input type="text" placeholder="Usuário" {...register("email")} />
             </div>
             <div className={styles.textfield}>
               <label>Senha</label>
-              <input type="password" name="password" placeholder="Senha" />
+              <input
+                type="password"
+                placeholder="Senha"
+                {...register("password")}
+              />
             </div>
-            <button className={styles.btnLogin}>Login</button>
+            <button
+              className={styles.btnLogin}
+              onClick={() => handleSubmit(handleSignIn)()}
+            >
+              Entrar
+            </button>
           </div>
         </div>
       </div>
-    </main>
+    </>
   );
 }

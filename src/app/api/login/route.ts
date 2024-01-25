@@ -15,14 +15,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const response = NextResponse.json({ message: "OK" }, { status: 200 });
-
-    response.cookies.set({
-      name: "token",
-      value: token,
-    });
-
-    return response;
+    return NextResponse.json({ message: "OK", token: token }, { status: 200 });
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
       return NextResponse.json(
