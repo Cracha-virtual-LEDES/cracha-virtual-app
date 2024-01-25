@@ -49,12 +49,12 @@ export async function PUT(req: NextRequest) {
             return NextResponse.json({ message: "Invalid Token"}, { status: 500 });
         }
 
-        const pessoaId = payload.id;
+        const crachaId = payload.id;
 
         const data = await req?.json();
 
         const cracha = await prisma.cracha.update({
-            where: { pessoaId: pessoaId },
+            where: { id: crachaId },
             data: {...data, verified: false}
         });
 
