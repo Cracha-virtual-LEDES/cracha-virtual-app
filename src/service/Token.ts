@@ -1,5 +1,3 @@
-"use server";
-
 import { SignJWT, jwtVerify } from "jose";
 
 function getJwtSecretKey() {
