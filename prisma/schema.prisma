@@ -15,15 +15,17 @@ model Pessoa {
   name      String
   email     String  @unique
   password  String
+  CPF       String  @unique
   isAdmin   Boolean
-  photoPath String
-  verified  Boolean
+  role      String
   cracha    Cracha?
 }
 
 model Cracha {
   id        Int     @id @default(autoincrement())
-  color     String
   pessoa    Pessoa  @relation(fields: [pessoaId], references: [id])
   pessoaId  Int     @unique
+  photoPath String
+  verified  Boolean
+  expirationDate  DateTime
 }

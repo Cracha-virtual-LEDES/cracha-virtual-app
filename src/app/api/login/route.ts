@@ -4,7 +4,9 @@ import { Authentication } from "src/service";
 export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
+
     const token = await Authentication.login({ email, password });
+    
 
     if (!token) {
       return NextResponse.json(
