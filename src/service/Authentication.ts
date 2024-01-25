@@ -32,21 +32,33 @@ const login = async ({
   return token;
 };
 
-const register = async (data: RegisterData): Promise<UserData> => {
-  const newUser = {
-    ...data,
-    password: await PasswordCrypto.hashPassword(data.password),
+const register = async (data: any): Promise<any> => {
+
+
+  const newPessoa = {
+    ...data.pessoa,
+    password: await PasswordCrypto.hashPassword(data.pessoa.password),
+    isAdmin: false
   };
 
-  const user = await prisma.pessoa.create({
-    data: {
-      ...newUser,
-      verified: false,
-      isAdmin: false,
-    },
+  const expirationDate = new Date();
+  expirationDate.setFullYear(expirationDate.getFullYear() + 1);
+
+  const newCracha = {
+    ...data.cracha,
+    verified: false,
+    expirationDate: expirationDate
+  };
+
+  const pessoa = await prisma.pessoa.create({
+    data: newPessoa
   });
 
-  return { ...user, password: undefined };
+  const cracha = await prisma.cracha.create({
+    data: {...newCracha, pessoaId: pessoa.id}
+  });
+
+  return { ...{pessoa: {...pessoa, password: undefined}, cracha: cracha}};
 };
 
 export const Authentication = { login, register };
