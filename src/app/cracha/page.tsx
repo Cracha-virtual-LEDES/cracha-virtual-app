@@ -1,19 +1,19 @@
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+"use client";
 
-export default async function Cracha() {
-  await getServersideProps();
+import { redirect } from "next/navigation";
+import { parseCookies } from "nookies";
+import { useEffect } from "react";
+
+export default function Cracha() {
+  useEffect(() => {
+    const { token: token } = parseCookies();
+    if (!token) {
+      redirect("/");
+    }
+  }, []);
   return (
     <>
       <h1>Crachá</h1>
     </>
   );
-}
-
-async function getServersideProps() {
-  const token = cookies().get("token");
-  console.log(token);
-  if (!token) {
-    redirect("/");
-  }
 }
