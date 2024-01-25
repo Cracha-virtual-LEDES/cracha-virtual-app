@@ -27,18 +27,21 @@ const login = async ({
     return null;
   }
 
-  const token = await Token.issueToken(user);
+  const payload = {
+    ...user,
+    password: undefined,
+  };
+
+  const token = await Token.issueToken(payload);
 
   return token;
 };
 
 const register = async (data: any): Promise<any> => {
-
-
   const newPessoa = {
     ...data.pessoa,
     password: await PasswordCrypto.hashPassword(data.pessoa.password),
-    isAdmin: false
+    isAdmin: false,
   };
 
   const expirationDate = new Date();
@@ -47,18 +50,18 @@ const register = async (data: any): Promise<any> => {
   const newCracha = {
     ...data.cracha,
     verified: false,
-    expirationDate: expirationDate
+    expirationDate: expirationDate,
   };
 
   const pessoa = await prisma.pessoa.create({
-    data: newPessoa
+    data: newPessoa,
   });
 
   const cracha = await prisma.cracha.create({
-    data: {...newCracha, pessoaId: pessoa.id}
+    data: { ...newCracha, pessoaId: pessoa.id },
   });
 
-  return { ...{pessoa: {...pessoa, password: undefined}, cracha: cracha}};
+  return { ...{ pessoa: { ...pessoa, password: undefined }, cracha: cracha } };
 };
 
 export const Authentication = { login, register };
