@@ -1,20 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "../../../../lib/db";
+import { Token } from "src/service";
 
 export async function GET(req: NextRequest) {
     try {
 
-        // TODO verificar se é admin pelo JWT
+        let jwt = await req.headers.get("authorization");
 
-        const pessoas = await prisma.pessoa.findMany({
-            where: {
-                verified: false
-            },
-            include: {cracha: true}
-        })
+        let token = jwt?.substring(jwt.indexOf(" ") + 1, jwt.length) || "";
 
-        return NextResponse.json({ message: "OK", pessoas }, { status: 200 });
+        const payload = await Token.verifyJwtToken(token);  
+
+        if(payload?.isAdmin){
+            const pessoas = await prisma.pessoa.findMany({
+                where: {
+                    verified: false
+                },
+                include: {cracha: true}
+            })
+    
+            return NextResponse.json({ message: "OK", pessoas }, { status: 200 });
+        }else{
+            return NextResponse.json({ message: "Not admin"}, { status: 403 });
+        }
+
     } catch (error) {
         return NextResponse.json({ message: "Error", error }, { status: 500 });
     }
