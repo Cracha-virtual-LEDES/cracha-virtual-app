@@ -1,9 +1,13 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import styles from "./page.module.css";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "src/context/AuthContext";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { parseCookies } from "nookies";
+import Link from "next/link";
 
 type FormInput = {
   email: string;
@@ -13,6 +17,13 @@ type FormInput = {
 export default function Home() {
   const { register, handleSubmit } = useForm<FormInput>();
   const { signIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    const { token: token } = parseCookies();
+    if (token) {
+      redirect("/cracha");
+    }
+  }, []);
 
   const handleSignIn = async (data: FormInput) => {
     await signIn(data);
@@ -43,6 +54,9 @@ export default function Home() {
             >
               Entrar
             </button>
+            <Link href="/register" style={{ color: "white" }}>
+              Cadastrar-se
+            </Link>
           </div>
         </div>
       </div>
