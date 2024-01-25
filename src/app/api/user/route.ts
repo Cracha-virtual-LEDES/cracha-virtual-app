@@ -1,38 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-
-import prisma from "../../../../lib/db";
-import { PasswordCrypto } from "../../../service";
+import { Authentication } from "src/service";
 
 export async function POST(req: NextRequest) {
   try {
-    const data = await req?.json();
-    const newData = {
-      ...data,
-      password: await PasswordCrypto.hashPassword(data.password),
-    };
+    const { email, password } = await req.json();
+    const token = await Authentication.login({ email, password });
 
-    const color = newData.color;
+    if (!token) {
+      return NextResponse.json(
+        { message: "Invalid credentials" },
+        { status: 400 }
+      );
+    }
 
-    delete newData.color;
+    const response = NextResponse.json({ message: "OK" }, { status: 200 });
 
-    const user = await prisma.pessoa.create({
-      data: newData,
+    response.cookies.set({
+      name: "token",
+      value: token,
     });
 
-    const cracha = await prisma.cracha.create({
-      data: { color: color, pessoaId: user.id }
-    });
-
-    return NextResponse.json({ message: "OK", user , cracha}, { status: 201 });
+    return response;
   } catch (error) {
-    return NextResponse.json({ message: "Error", error }, { status: 500 });
+    if (process.env.NODE_ENV !== "production") {
+      return NextResponse.json(
+        { message: "Unexpected server error", error },
+        { status: 500 }
+      );
+    }
+    return NextResponse.json(
+      { message: "Unexpected server error" },
+      { status: 500 }
+    );
   }
-}
-
-export async function PUT(req: NextRequest) {
-  const { id } = await req?.json();
-  const user = await prisma.pessoa.findUnique({
-    where: { id: id },
-  });
-  return NextResponse.json({ message: "OK", user }, { status: 200 });
 }
