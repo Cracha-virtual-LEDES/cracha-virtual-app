@@ -1,5 +1,3 @@
-"use server";
-
 import { SignJWT, jwtVerify } from "jose";
 
 function getJwtSecretKey() {
@@ -14,7 +12,7 @@ const verifyJwtToken = async (token: string) => {
   try {
     const secret = getJwtSecretKey();
     const { payload } = await jwtVerify(token, secret);
-    console.log(secret, token, payload);
+    // console.log(secret, token, payload);
     return payload;
   } catch (error) {
     return null;
