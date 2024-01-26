@@ -44,7 +44,7 @@ export default async function EditForm({ user }: Props) {
       alert("As senhas não estão iguais");
 
     const photo = await verifyPhoto(data.photoPath?.[0]);
-    const res = await fetch("http://localhost:3000/api/user", {
+    const res = await fetch(`${process.env.API_URL}/api/user`, {
       method: "PUT",
       body: JSON.stringify({
         ...data,
