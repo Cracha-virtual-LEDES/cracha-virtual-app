@@ -1,9 +1,8 @@
-"use client";
+import { getUser } from "src/app/lib/actions";
+import EditForm from "src/components/EditForm";
 
-export default function EditarCracha() {
-  return (
-    <>
-      <h1>EditarCracha</h1>
-    </>
-  );
+export default async function Home() {
+  const user = await getUser();
+
+  return <EditForm user={user} />;
 }

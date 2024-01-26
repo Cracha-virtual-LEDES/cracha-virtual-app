@@ -1,7 +1,7 @@
 .container {
   width: 100vw;
   height: 100vh;
-  background: #D7D7D7;
+  background: #d7d7d7;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,7 +23,7 @@
   align-items: center;
   flex-direction: column;
   padding: 30px 35px;
-  background: #0099CB;
+  background: #0099cb;
   border-radius: 20px;
   box-shadow: 0px 10px 40px #00000056;
 }
@@ -34,7 +34,6 @@
   font-weight: bolder;
 }
 
-
 .textfield {
   width: 100%;
   display: flex;
@@ -44,7 +43,7 @@
   margin: 10px 0px;
 }
 
-.textfield>input {
+.textfield > input {
   width: 100%;
   border: none;
   border-radius: 10px;
@@ -55,12 +54,12 @@
   box-sizing: border-box;
 }
 
-.textfield>label {
+.textfield > label {
   color: #f0ffffde;
   margin-bottom: 10px;
 }
 
-.textfield>input::placeholder {
+.textfield > input::placeholder {
   color: #f0ffff94;
 }
 
@@ -79,7 +78,7 @@
   text-transform: uppercase;
   font-weight: 900;
   color: #ffffff;
-  background: #0099CB;
+  background: #0099cb;
   cursor: pointer;
   box-shadow: 0px 10px 40px -12px #0095ff52;
 }
@@ -91,12 +90,11 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .container
-   {
+  .container {
     flex-direction: column;
   }
 
-  .leftLogin>h1 {
+  .leftLogin > h1 {
     display: none;
   }
 
@@ -105,8 +103,7 @@
     height: auto;
   }
 
-  .content
- {
+  .content {
     width: 100%;
     height: auto;
   }

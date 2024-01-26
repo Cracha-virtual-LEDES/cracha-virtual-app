@@ -67,7 +67,12 @@ export default async function CardCracha({ cracha, user }: Props) {
           </div>
         </div>
         <div className={styles.action}>
-          <button className={styles.btnLogin}>Editar</button>
+          <button
+            className={styles.btnLogin}
+            onClick={() => router.push("/cracha/editar-cracha")}
+          >
+            Editar
+          </button>
           <button
             className={styles.btnLogin}
             onClick={async () => await signOut()}
