@@ -52,9 +52,6 @@ const register = async (data: any): Promise<any> => {
     expirationDate: expirationDate,
   };
 
-  console.log(newPessoa);
-  console.log(newCracha);
-
   const pessoa = await prisma.pessoa.create({
     data: newPessoa,
   });

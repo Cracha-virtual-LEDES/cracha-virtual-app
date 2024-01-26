@@ -10,14 +10,14 @@ export async function GET(req: NextRequest) {
 
         let jwt = req.cookies.get("token")?.value;
 
-        if(!jwt){
+        if (!jwt) {
             return NextResponse.json({ message: "Invalid credentials" }, { status: 400 });
         }
 
         const payload = await Token.verifyJwtToken(jwt) as Pessoa;
 
-        if(!payload){
-            return NextResponse.json({ message: "Invalid Token"}, { status: 500 });
+        if (!payload) {
+            return NextResponse.json({ message: "Invalid Token" }, { status: 500 });
         }
 
         const pessoaId = payload.id;
@@ -39,14 +39,14 @@ export async function PUT(req: NextRequest) {
 
         let jwt = req.cookies.get("token")?.value;
 
-        if(!jwt){
+        if (!jwt) {
             return NextResponse.json({ message: "Invalid credentials" }, { status: 400 });
         }
 
         const payload = await Token.verifyJwtToken(jwt) as Pessoa;
 
-        if(!payload){
-            return NextResponse.json({ message: "Invalid Token"}, { status: 500 });
+        if (!payload) {
+            return NextResponse.json({ message: "Invalid Token" }, { status: 500 });
         }
 
         const crachaId = payload.id;
@@ -55,10 +55,10 @@ export async function PUT(req: NextRequest) {
 
         const cracha = await prisma.cracha.update({
             where: { id: crachaId },
-            data: {...data, verified: false}
+            data: { ...data, verified: false, expirationDate: undefined, id: undefined, pessoaId: undefined }
         });
 
-        return NextResponse.json({ message: "OK", cracha}, { status: 200 });
+        return NextResponse.json({ message: "OK", cracha }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ message: "Error", error }, { status: 500 });
     }
