@@ -25,6 +25,7 @@ export async function GET(req: NextRequest) {
       id: user.id,
       name: user.name,
       email: user.email,
+      CPF: user.CPF,
       isAdmin: user.isAdmin,
       role: user.role,
     };
