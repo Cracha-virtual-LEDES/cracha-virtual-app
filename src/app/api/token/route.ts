@@ -1,3 +1,5 @@
+import prisma from "../../../../lib/db";
+
 import { Pessoa } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { Token } from "src/service";
@@ -20,17 +22,27 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // nome, email, id, isAdmin, role
-    const data = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      CPF: user.CPF,
-      isAdmin: user.isAdmin,
-      role: user.role,
-    };
+    const pessoa = await prisma.pessoa.findFirst({
+      where: { id: user.id },
+    })
 
-    return NextResponse.json({ message: "OK", data }, { status: 200 });
+    if (pessoa) {
+      const data = {
+        id: pessoa.id,
+        name: pessoa.name,
+        email: pessoa.email,
+        CPF: pessoa.CPF,
+        isAdmin: pessoa.isAdmin,
+        role: pessoa.role
+      }
+      return NextResponse.json({ message: "OK", data }, { status: 200 });
+    }
+
+
+    return NextResponse.json(
+      { message: "Unexpected server error" },
+      { status: 500 }
+    );
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
       return NextResponse.json(
