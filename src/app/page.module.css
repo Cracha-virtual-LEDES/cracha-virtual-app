@@ -1,25 +1,25 @@
 .mainLogin {
   width: 100vw;
   height: 100vh;
-  background: #201b2c;
+  background-image: url("../../public/turma-ledes.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.leftLogin {
-  width: 50vw;
+.mainLogin>.background{
+  width: 100vw;
   height: 100vh;
+  background-color: #1e3b669f;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
 }
 
-.leftLogin>h1 {
-  color: #77ffc0;
-  font-size: 2.5vw;
-}
+
 
 .rightLogin {
   width: 50vw;
@@ -36,13 +36,13 @@
   align-items: center;
   flex-direction: column;
   padding: 30px 35px;
-  background: #2f2841;
+  background: #0099cb;
   border-radius: 20px;
   box-shadow: 0px 10px 40px #00000056;
 }
 
 .cardLogin>h1 {
-  color: #00ff88;
+  color: #ffffff;
   font-weight: 800;
   margin: 0;
 }
@@ -61,8 +61,8 @@
   border: none;
   border-radius: 10px;
   padding: 15px;
-  background: #514869;
-  color: #f0ffffde;
+  background: #ffffff;
+  color: #000000de;
   font-size: 12pt;
   box-shadow: 0px 10px 40px #00000056;
   outline: none;
@@ -70,12 +70,11 @@
 }
 
 .textfield>label {
-  color: #f0ffffde;
   margin-bottom: 10px;
 }
 
 .textfield>input::placeholder {
-  color: #f0ffff94;
+  color: #00000094;
 }
 
 .btnLogin {
@@ -88,10 +87,10 @@
   text-transform: uppercase;
   font-weight: 800;
   letter-spacing: 3px;
-  color: #2b134b;
-  background: #00ff88;
+  color: #ffffff;
+  background: #1e3b66;
   cursor: pointer;
-  box-shadow: 0px 10px 40px -12px #00ff8052;
+  box-shadow: 0px 10px 40px -12px #1e3b66;
 }
 
 @media only screen and (max-width: 950px) {
