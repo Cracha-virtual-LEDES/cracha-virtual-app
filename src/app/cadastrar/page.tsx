@@ -38,7 +38,7 @@ export default function Home() {
     if (data.password !== data.passwordVerify)
       alert("As senhas não estão iguais");
 
-    const res = await fetch(`${process.env.API_URL}/api/user`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user`, {
       method: "POST",
       body: JSON.stringify({
         pessoa: { ...data, photoPath: undefined, passwordVerify: undefined },

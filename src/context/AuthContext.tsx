@@ -24,7 +24,7 @@ export default function AuthProvider({
   const router = useRouter();
 
   async function signIn({ email, password }: SignInCredentials) {
-    const res = await fetch(`${process.env.API_URL}/api/login`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });

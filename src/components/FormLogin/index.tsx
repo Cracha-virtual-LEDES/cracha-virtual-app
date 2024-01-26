@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "src/context/AuthContext";
 import styles from "./page.module.css";
@@ -14,6 +14,8 @@ type FormInput = {
 export default function FormLogin() {
   const { register, handleSubmit } = useForm<FormInput>();
   const { signIn } = useContext(AuthContext);
+
+  useEffect(() => console.log(process.env.NEXT_PUBLIC_API_URL));
 
   const handleSignIn = async (data: FormInput) => {
     await signIn(data);

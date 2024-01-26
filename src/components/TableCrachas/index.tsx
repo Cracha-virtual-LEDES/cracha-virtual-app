@@ -21,7 +21,7 @@ export default function TableCrachas({ data }: Props) {
   }, [data]);
 
   async function verificarCracha(id: number) {
-    const res = await fetch("http://localhost:3000/api/admin", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin`, {
       method: "PATCH",
       body: JSON.stringify({ id }),
     });
