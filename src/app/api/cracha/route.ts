@@ -1,35 +1,46 @@
-import { NextRequest, NextResponse } from "next/server";
-
 import prisma from "../../../../lib/db";
-import { Token } from "src/service";
+
 import { Pessoa } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
+import { Token } from "src/service";
 
 // Buscar crachá por ID da pessoa
 export async function GET(req: NextRequest) {
     try {
 
-        let jwt = req.cookies.get("token")?.value;
-
-        if(!jwt){
-            return NextResponse.json({ message: "Invalid credentials" }, { status: 400 });
+        const token = req.cookies.get("token")?.value;
+        if (!token) {
+            return NextResponse.json(
+                { message: "Invalid credentials" },
+                { status: 400 }
+            );
         }
+        const user = (await Token.verifyJwtToken(token)) as Pessoa;
 
-        const payload = await Token.verifyJwtToken(jwt) as Pessoa;
-
-        if(!payload){
-            return NextResponse.json({ message: "Invalid Token"}, { status: 500 });
+        if (!user) {
+            return NextResponse.json(
+                { message: "Invalid credentials" },
+                { status: 400 }
+            );
         }
-
-        const pessoaId = payload.id;
 
         const cracha = await prisma.cracha.findFirst({
-            where: { pessoaId: pessoaId },
+            where: { pessoaId: user.id },
         });
 
         return NextResponse.json({ message: "OK", cracha }, { status: 200 });
 
     } catch (error) {
-        return NextResponse.json({ message: "Error", error }, { status: 500 });
+        if (process.env.NODE_ENV !== "production") {
+            return NextResponse.json(
+                { message: "Unexpected server error", error },
+                { status: 500 }
+            );
+        }
+        return NextResponse.json(
+            { message: "Unexpected server error" },
+            { status: 500 }
+        );
     }
 }
 
@@ -37,29 +48,40 @@ export async function GET(req: NextRequest) {
 export async function PUT(req: NextRequest) {
     try {
 
-        let jwt = req.cookies.get("token")?.value;
-
-        if(!jwt){
-            return NextResponse.json({ message: "Invalid credentials" }, { status: 400 });
+        const token = req.cookies.get("token")?.value;
+        if (!token) {
+            return NextResponse.json(
+                { message: "Invalid credentials" },
+                { status: 400 }
+            );
         }
+        const user = (await Token.verifyJwtToken(token)) as Pessoa;
 
-        const payload = await Token.verifyJwtToken(jwt) as Pessoa;
-
-        if(!payload){
-            return NextResponse.json({ message: "Invalid Token"}, { status: 500 });
+        if (!user) {
+            return NextResponse.json(
+                { message: "Invalid credentials" },
+                { status: 400 }
+            );
         }
-
-        const crachaId = payload.id;
 
         const data = await req?.json();
 
         const cracha = await prisma.cracha.update({
-            where: { id: crachaId },
-            data: {...data, verified: false}
+            where: { pessoaId: user.id },
+            data: { ...data, verified: false, expirationDate: undefined, id: undefined, pessoaId: undefined }
         });
 
-        return NextResponse.json({ message: "OK", cracha}, { status: 200 });
+        return NextResponse.json({ message: "OK", cracha }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ message: "Error", error }, { status: 500 });
+        if (process.env.NODE_ENV !== "production") {
+            return NextResponse.json(
+                { message: "Unexpected server error", error },
+                { status: 500 }
+            );
+        }
+        return NextResponse.json(
+            { message: "Unexpected server error" },
+            { status: 500 }
+        );
     }
 }
