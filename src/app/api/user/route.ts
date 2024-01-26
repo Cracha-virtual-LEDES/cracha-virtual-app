@@ -46,6 +46,10 @@ export async function PUT(req: NextRequest) {
       newData.password = await PasswordCrypto.hashPassword(newData.password)
     }
 
+    if (newData.password === "") {
+      newData.password = undefined;
+    }
+
     const pessoa = await prisma.pessoa.update({
       where: { id: pessoaId },
       data: { ...newData, isAdmin: undefined, id: undefined}
