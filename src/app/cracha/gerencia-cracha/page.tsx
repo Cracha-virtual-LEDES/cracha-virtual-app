@@ -1,5 +1,7 @@
+import { getData } from "src/app/lib/actions";
+
 import TableCrachas from "src/components/TableCrachas";
-import { getData } from "./actions";
+
 import styles from "./page.module.css";
 
 export default async function GerenciaCracha() {

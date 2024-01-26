@@ -5,7 +5,7 @@ import VerifiedIcon from "@mui/icons-material/Verified";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import { IDataProps, getData } from "src/app/cracha/gerencia-cracha/actions";
+import { IDataProps, getData } from "src/app/lib/actions";
 
 import styles from "./page.module.css";
 
