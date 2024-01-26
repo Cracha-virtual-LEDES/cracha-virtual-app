@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
 }
 
 // Verificar alterações
-export async function PUT(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
     try {
 
         const token = req.cookies.get("token")?.value;
