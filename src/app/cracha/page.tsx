@@ -1,17 +1,16 @@
 "use client";
 
-import { redirect } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import Image from "next/image";
-import GridLoader from "react-spinners/GridLoader";
-import VerifiedIcon from "@mui/icons-material/Verified";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
+import VerifiedIcon from "@mui/icons-material/Verified";
+import { redirect, useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import GridLoader from "react-spinners/GridLoader";
 
 // import { Chip } from "@nextui-org/chip";
 
-import styles from "./page.module.css";
-import { AuthContext } from "src/context/AuthContext";
 import { Avatar, Chip } from "@mui/material";
+import { AuthContext } from "src/context/AuthContext";
+import styles from "./page.module.css";
 
 interface ICrachaProps {
   id: number;
@@ -23,6 +22,7 @@ interface ICrachaProps {
 
 export default function Cracha() {
   const { user, isAuthenticaded, signOut } = useContext(AuthContext);
+  const router = useRouter();
   const [cracha, setCracha] = useState<ICrachaProps | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -124,6 +124,16 @@ export default function Cracha() {
                 Sair
               </button>
             </div>
+            {user?.isAdmin && (
+              <div className={styles.action}>
+                <button
+                  className={styles.btnCracha}
+                  onClick={() => router.push("/cracha/gerencia-cracha")}
+                >
+                  Gerenciar Crachás
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
