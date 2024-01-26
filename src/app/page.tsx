@@ -1,13 +1,12 @@
 "use client";
 
-import { useContext, useEffect } from "react";
-import styles from "./page.module.css";
-import { useForm } from "react-hook-form";
-import { AuthContext } from "src/context/AuthContext";
-import { cookies } from "next/headers";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { parseCookies } from "nookies";
-import Link from "next/link";
+import { useContext, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { AuthContext } from "src/context/AuthContext";
+import styles from "./page.module.css";
 
 type FormInput = {
   email: string;
@@ -30,12 +29,17 @@ export default function Home() {
     console.log(data);
   };
 
+  function submitForm(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    handleSubmit(handleSignIn)();
+  }
+
   return (
     <>
       <div className={styles.mainLogin}>
         <div className={styles.background}>
           <div className={styles.rightLogin}>
-            <div className={styles.cardLogin}>
+            <form className={styles.cardLogin} onSubmit={submitForm}>
               <h1>LOGIN</h1>
               <div className={styles.textfield}>
                 <label>E-mail</label>
@@ -53,16 +57,13 @@ export default function Home() {
                   {...register("password")}
                 />
               </div>
-              <button
-                className={styles.btnLogin}
-                onClick={() => handleSubmit(handleSignIn)()}
-              >
+              <button type="submit" className={styles.btnLogin}>
                 Entrar
               </button>
               <Link href="/register" style={{ color: "white" }}>
                 Cadastrar-se
               </Link>
-            </div>
+            </form>
           </div>
         </div>
       </div>
