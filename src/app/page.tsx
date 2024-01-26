@@ -15,18 +15,17 @@ type FormInput = {
 
 export default function Home() {
   const { register, handleSubmit } = useForm<FormInput>();
-  const { signIn } = useContext(AuthContext);
+  const { signIn, isAuthenticaded } = useContext(AuthContext);
 
   useEffect(() => {
-    const { token: token } = parseCookies();
-    if (token) {
+    // const { token: token } = parseCookies();
+    if (isAuthenticaded) {
       redirect("/cracha");
     }
-  }, []);
+  }, [isAuthenticaded]);
 
   const handleSignIn = async (data: FormInput) => {
     await signIn(data);
-    console.log(data);
   };
 
   function submitForm(e: React.FormEvent<HTMLFormElement>) {
@@ -60,7 +59,7 @@ export default function Home() {
               <button type="submit" className={styles.btnLogin}>
                 Entrar
               </button>
-              <Link href="/register" style={{ color: "white" }}>
+              <Link href="/cadastrar" style={{ color: "white" }}>
                 Cadastrar-se
               </Link>
             </form>

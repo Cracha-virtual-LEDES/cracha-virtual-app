@@ -21,6 +21,7 @@ type User = {
   email: string;
   role: string;
   isAdmin: boolean;
+  CPF: string;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
