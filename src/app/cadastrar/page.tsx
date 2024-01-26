@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import styles from "./page.module.css";
 import Link from "next/link";
+import { useContext } from "react";
+import { AuthContext } from "src/context/AuthContext";
 
 type FormInput = {
   name: string;
@@ -14,20 +16,30 @@ type FormInput = {
   photoPath: string;
 };
 
-// TODO: validar fomrulario
+const toBase64 = (file: any) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
 
+// TODO: validar fomrulario
 export default function Home() {
+  // const { isAuthenticaded} = useContext(AuthContext);
   const { register, handleSubmit } = useForm<FormInput>();
 
   const handleRegister = async (data: FormInput) => {
-    const res = await fetch("http://localhost:3000/api/user", {
+    console.log(data.photoPath);
+    const photoPath = await toBase64(data.photoPath[0]);
+
+    await fetch("http://localhost:3000/api/user", {
       method: "POST",
       body: JSON.stringify({
         pessoa: { ...data, photoPath: undefined, passwordVerify: undefined },
-        cracha: { photoPath: "coco04" },
+        cracha: { photoPath: photoPath },
       }),
     });
-    console.log(await res.json());
   };
 
   return (
