@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 
     const pessoa = await prisma.pessoa.findFirst({
       where: { id: user.id },
-    })
+    });
 
     if (pessoa) {
       const data = {
@@ -33,11 +33,10 @@ export async function GET(req: NextRequest) {
         email: pessoa.email,
         CPF: pessoa.CPF,
         isAdmin: pessoa.isAdmin,
-        role: pessoa.role
-      }
+        role: pessoa.role,
+      };
       return NextResponse.json({ message: "OK", data }, { status: 200 });
     }
-
 
     return NextResponse.json(
       { message: "Unexpected server error" },

@@ -18,7 +18,7 @@ export default function TableCrachas({ data }: Props) {
 
   useEffect(() => {
     setCrachas(data);
-  }, []);
+  }, [data]);
 
   async function verificarCracha(id: number) {
     const res = await fetch("http://localhost:3000/api/admin", {
