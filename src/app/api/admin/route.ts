@@ -1,24 +1,30 @@
-import { NextRequest, NextResponse } from "next/server";
-
 import prisma from "../../../../lib/db";
+
+import { Pessoa } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
 import { Token } from "src/service";
 
+// Ler todas as solicitações de alteração
 export async function GET(req: NextRequest) {
     try {
 
-        let jwt = req.cookies.get("token")?.value;
+        const token = req.cookies.get("token")?.value;
+        if (!token) {
+            return NextResponse.json(
+                { message: "Invalid credentials" },
+                { status: 400 }
+            );
+        }
+        const user = (await Token.verifyJwtToken(token)) as Pessoa;
 
-        if(!jwt){
-            return NextResponse.json({ message: "Invalid credentials" }, { status: 400 });
+        if (!user) {
+            return NextResponse.json(
+                { message: "Invalid credentials" },
+                { status: 400 }
+            );
         }
 
-        const payload = await Token.verifyJwtToken(jwt);
-
-        if(!payload){
-            return NextResponse.json({ message: "Invalid Token"}, { status: 500 });
-        }
-
-        if (payload.isAdmin) {
+        if (user.isAdmin) {
 
             const pessoasNotVerified = await prisma.pessoa.findMany({
                 where: {
@@ -26,35 +32,49 @@ export async function GET(req: NextRequest) {
                         verified: false
                     }
                 },
-                select: {id: true, name: true, email: true, CPF: true, role: true, cracha: {select: {id: true, photoPath: true, verified: true, expirationDate: true}}}
+                select: { id: true, name: true, email: true, CPF: true, role: true, cracha: { select: { id: true, photoPath: true, verified: true, expirationDate: true } } }
             })
 
-            return NextResponse.json({ message: "OK", pessoasNotVerified}, { status: 200 });
+            return NextResponse.json({ message: "OK", pessoasNotVerified }, { status: 200 });
         } else {
             return NextResponse.json({ message: "Not admin" }, { status: 403 });
         }
 
     } catch (error) {
-        return NextResponse.json({ message: "Error", error }, { status: 500 });
+        if (process.env.NODE_ENV !== "production") {
+            return NextResponse.json(
+                { message: "Unexpected server error", error },
+                { status: 500 }
+            );
+        }
+        return NextResponse.json(
+            { message: "Unexpected server error" },
+            { status: 500 }
+        );
     }
 }
 
+// Verificar alterações
 export async function PUT(req: NextRequest) {
     try {
 
-        let jwt = req.cookies.get("token")?.value;
+        const token = req.cookies.get("token")?.value;
+        if (!token) {
+            return NextResponse.json(
+                { message: "Invalid credentials" },
+                { status: 400 }
+            );
+        }
+        const user = (await Token.verifyJwtToken(token)) as Pessoa;
 
-        if(!jwt){
-            return NextResponse.json({ message: "Invalid credentials" }, { status: 400 });
+        if (!user) {
+            return NextResponse.json(
+                { message: "Invalid credentials" },
+                { status: 400 }
+            );
         }
 
-        const payload = await Token.verifyJwtToken(jwt);
-
-        if(!payload){
-            return NextResponse.json({ message: "Invalid Token"}, { status: 500 });
-        }
-
-        if (payload.isAdmin) {
+        if (user.isAdmin) {
 
             const crachaToVerify = await req?.json();
 
@@ -63,15 +83,24 @@ export async function PUT(req: NextRequest) {
 
             const cracha = await prisma.cracha.update({
                 where: { id: crachaToVerify.id },
-                data: { verified: true, expirationDate: newExpirationDate}
+                data: { verified: true, expirationDate: newExpirationDate }
             });
 
             return NextResponse.json({ message: "OK", cracha }, { status: 200 });
-        }else{
+        } else {
             return NextResponse.json({ message: "Not admin" }, { status: 403 });
         }
 
     } catch (error) {
-        return NextResponse.json({ message: "Error", error }, { status: 500 });
+        if (process.env.NODE_ENV !== "production") {
+            return NextResponse.json(
+                { message: "Unexpected server error", error },
+                { status: 500 }
+            );
+        }
+        return NextResponse.json(
+            { message: "Unexpected server error" },
+            { status: 500 }
+        );
     }
 }
