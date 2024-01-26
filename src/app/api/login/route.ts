@@ -6,7 +6,6 @@ export async function POST(req: NextRequest) {
     const { email, password } = await req.json();
 
     const token = await Authentication.login({ email, password });
-    
 
     if (!token) {
       return NextResponse.json(

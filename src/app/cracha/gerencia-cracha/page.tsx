@@ -1,9 +1,15 @@
-"use client";
+import TableCrachas from "src/components/TableCrachas";
+import { getData } from "./actions";
+import styles from "./page.module.css";
 
-export default function GerenciaCracha() {
+export default async function GerenciaCracha() {
+  const crachas = await getData();
+
   return (
-    <>
-      <h1>Gerencia Cracha</h1>
-    </>
+    <div className={styles.main}>
+      <div className={styles.logo} />
+      <p>Crachás</p>
+      <TableCrachas data={crachas} />
+    </div>
   );
 }

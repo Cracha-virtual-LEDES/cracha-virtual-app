@@ -1,7 +1,7 @@
 "use client";
 
+import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { createContext, useEffect, useState } from "react";
-import { parseCookies, setCookie, destroyCookie } from "nookies";
 
 type AuthContextType = {
   isAuthenticaded: boolean;
@@ -21,6 +21,7 @@ type User = {
   email: string;
   role: string;
   isAdmin: boolean;
+  CPF: string;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -40,9 +41,13 @@ export default function AuthProvider({
       fetch("http://localhost:3000/api/token", {
         method: "GET",
       }).then((res) => {
-        res.json().then((data) => {
-          setUser(data?.data);
-        });
+        if (!res.ok) {
+          destroyCookie(null, "token");
+        } else {
+          res.json().then((data) => {
+            setUser(data?.data);
+          });
+        }
       });
     }
   }, []);

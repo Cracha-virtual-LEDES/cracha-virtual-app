@@ -12,6 +12,7 @@ import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import styles from "./page.module.css";
 import { AuthContext } from "src/context/AuthContext";
 import { Avatar, Chip } from "@mui/material";
+import Link from "next/link";
 
 interface ICrachaProps {
   id: number;
@@ -37,7 +38,6 @@ export default function Cracha() {
       method: "GET",
     }).then((response) => {
       response.json().then((data) => {
-        console.log(data?.cracha);
         setCracha(data?.cracha);
         setLoading(false);
       });
@@ -111,11 +111,8 @@ export default function Cracha() {
               </div>
             </div>
             <div className={styles.action}>
-              <button
-                className={styles.btnLogin}
-                // onClick={() => handleSubmit(handleRegister)()}
-              >
-                Editar
+              <button className={styles.btnLogin}>
+                <Link href={"/cracha/editar-cracha"}>Editar</Link>
               </button>
               <button
                 className={styles.btnLogin}
