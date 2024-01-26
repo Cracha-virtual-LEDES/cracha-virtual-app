@@ -44,8 +44,6 @@ export async function getData(): Promise<IDataProps[]> {
     headers: { Cookie: nextCookies.toString() },
   });
   if (!res.ok) {
-    console.log(res);
-
     redirect("/");
   }
   const data = await res.json();
@@ -59,8 +57,6 @@ export async function getCrachaFromPessoa(): Promise<ICracha> {
     headers: { Cookie: nextCookies.toString() },
   });
   if (!res.ok) {
-    console.log(res);
-
     redirect("/");
   }
   const { cracha } = await res.json();
