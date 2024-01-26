@@ -1,12 +1,13 @@
 "use client";
 
 import { createContext, useEffect, useState } from "react";
-import { parseCookies, setCookie } from "nookies";
+import { parseCookies, setCookie, destroyCookie } from "nookies";
 
 type AuthContextType = {
   isAuthenticaded: boolean;
   user: User | null;
   signIn: (credentials: SignInCredentials) => Promise<void>;
+  signOut: () => Promise<void>;
 };
 
 type SignInCredentials = {
@@ -18,6 +19,7 @@ type User = {
   id: number;
   name: string;
   email: string;
+  role: string;
   isAdmin: boolean;
 };
 
@@ -35,8 +37,13 @@ export default function AuthProvider({
     const { token: token } = parseCookies();
 
     if (token) {
-      // endpoint para validar o token e retornar dados do usuário
-      // console.log("token", token);
+      fetch("http://localhost:3000/api/token", {
+        method: "GET",
+      }).then((res) => {
+        res.json().then((data) => {
+          setUser(data?.data);
+        });
+      });
     }
   }, []);
 
@@ -59,8 +66,13 @@ export default function AuthProvider({
     }
   }
 
+  async function signOut() {
+    destroyCookie(undefined, "token");
+    setUser(null);
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticaded, signIn }}>
+    <AuthContext.Provider value={{ user, isAuthenticaded, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

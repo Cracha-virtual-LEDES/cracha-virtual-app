@@ -1,25 +1,25 @@
-.mainLogin {
+.main {
   width: 100vw;
   height: 100vh;
-  background-image: url("../../public/turma-ledes.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  background: #D7D7D7;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.mainLogin>.background{
-  width: 100vw;
+.leftLogin {
+  width: 50vw;
   height: 100vh;
-  background-color: #1e3b669f;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
-
+.leftLogin>h1 {
+  color: #77ffc0;
+  font-size: 2.5vw;
+}
 
 .rightLogin {
   width: 50vw;
@@ -29,20 +29,20 @@
   align-items: center;
 }
 
-.cardLogin {
+.card {
   width: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   padding: 30px 35px;
-  background: #0099cb;
+  background: #2f2841;
   border-radius: 20px;
   box-shadow: 0px 10px 40px #00000056;
 }
 
-.cardLogin>h1 {
-  color: #ffffff;
+.card>h1 {
+  color: #00ff88;
   font-weight: 800;
   margin: 0;
 }
@@ -61,8 +61,8 @@
   border: none;
   border-radius: 10px;
   padding: 15px;
-  background: #ffffff;
-  color: #000000de;
+  background: #514869;
+  color: #f0ffffde;
   font-size: 12pt;
   box-shadow: 0px 10px 40px #00000056;
   outline: none;
@@ -70,11 +70,12 @@
 }
 
 .textfield>label {
+  color: #f0ffffde;
   margin-bottom: 10px;
 }
 
 .textfield>input::placeholder {
-  color: #00000094;
+  color: #f0ffff94;
 }
 
 .btnLogin {
@@ -87,20 +88,21 @@
   text-transform: uppercase;
   font-weight: 800;
   letter-spacing: 3px;
-  color: #ffffff;
-  background: #1e3b66;
+  color: #2b134b;
+  background: #00ff88;
   cursor: pointer;
-  box-shadow: 0px 10px 40px -12px #1e3b66;
+  box-shadow: 0px 10px 40px -12px #00ff8052;
 }
 
 @media only screen and (max-width: 950px) {
-  .cardLogin {
+  .card
+ {
     width: 85%;
   }
 }
 
 @media only screen and (max-width: 600px) {
-  .mainLogin {
+  .main {
     flex-direction: column;
   }
 
@@ -118,7 +120,8 @@
     height: auto;
   }
 
-  .cardLogin {
+  .card
+ {
     width: 90%;
   }
 }

@@ -33,30 +33,36 @@ export default function Home() {
   return (
     <>
       <div className={styles.mainLogin}>
-        <div className={styles.rightLogin}>
-          <div className={styles.cardLogin}>
-            <h1>LOGIN</h1>
-            <div className={styles.textfield}>
-              <label>E-mail</label>
-              <input type="text" placeholder="Usuário" {...register("email")} />
+        <div className={styles.background}>
+          <div className={styles.rightLogin}>
+            <div className={styles.cardLogin}>
+              <h1>LOGIN</h1>
+              <div className={styles.textfield}>
+                <label>E-mail</label>
+                <input
+                  type="text"
+                  placeholder="Usuário"
+                  {...register("email")}
+                />
+              </div>
+              <div className={styles.textfield}>
+                <label>Senha</label>
+                <input
+                  type="password"
+                  placeholder="Senha"
+                  {...register("password")}
+                />
+              </div>
+              <button
+                className={styles.btnLogin}
+                onClick={() => handleSubmit(handleSignIn)()}
+              >
+                Entrar
+              </button>
+              <Link href="/register" style={{ color: "white" }}>
+                Cadastrar-se
+              </Link>
             </div>
-            <div className={styles.textfield}>
-              <label>Senha</label>
-              <input
-                type="password"
-                placeholder="Senha"
-                {...register("password")}
-              />
-            </div>
-            <button
-              className={styles.btnLogin}
-              onClick={() => handleSubmit(handleSignIn)()}
-            >
-              Entrar
-            </button>
-            <Link href="/register" style={{ color: "white" }}>
-              Cadastrar-se
-            </Link>
           </div>
         </div>
       </div>
