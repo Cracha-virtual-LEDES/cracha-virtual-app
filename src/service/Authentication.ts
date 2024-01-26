@@ -1,18 +1,26 @@
-import { Pessoa } from "@prisma/client";
+import { Cracha, Pessoa } from "@prisma/client";
 
 import prisma from "../../lib/db";
 import { PasswordCrypto, Token } from "./index";
 
-interface LoginData {
+type LoginData = {
   email: string;
   password: string;
+};
+
+interface PessoaSemSenha extends Omit<Pessoa, "password"> {
+  password: undefined;
 }
 
-interface UserData extends Omit<Pessoa, "password"> {
-  password: string | undefined;
+interface RegisterDTO {
+  pessoa: Pessoa;
+  cracha: Cracha;
 }
 
-type RegisterData = Omit<Pessoa, "id" | "verified" | "isAdmin">;
+interface RegisterData {
+  pessoa: PessoaSemSenha;
+  cracha: Cracha;
+}
 
 const login = async ({
   email,
@@ -37,7 +45,7 @@ const login = async ({
   return token;
 };
 
-const register = async (data: any): Promise<any> => {
+const register = async (data: RegisterDTO): Promise<RegisterData> => {
   const newPessoa = {
     ...data.pessoa,
     password: await PasswordCrypto.hashPassword(data.pessoa.password),
@@ -52,9 +60,6 @@ const register = async (data: any): Promise<any> => {
     expirationDate: expirationDate,
   };
 
-  console.log(newPessoa);
-  console.log(newCracha);
-
   const pessoa = await prisma.pessoa.create({
     data: newPessoa,
   });
@@ -63,7 +68,7 @@ const register = async (data: any): Promise<any> => {
     data: { ...newCracha, pessoaId: pessoa.id },
   });
 
-  return { ...{ pessoa: { ...pessoa, password: undefined }, cracha: cracha } };
+  return { pessoa: { ...pessoa, password: undefined }, cracha: cracha };
 };
 
 export const Authentication = { login, register };

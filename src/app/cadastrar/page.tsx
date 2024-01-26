@@ -1,10 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import styles from "./page.module.css";
-import Link from "next/link";
-import { useContext } from "react";
-import { AuthContext } from "src/context/AuthContext";
 
 type FormInput = {
   name: string;

@@ -1,13 +1,12 @@
 "use client";
 
-import { useContext, useEffect } from "react";
-import styles from "./page.module.css";
-import { useForm } from "react-hook-form";
-import { AuthContext } from "src/context/AuthContext";
-import { cookies } from "next/headers";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { parseCookies } from "nookies";
-import Link from "next/link";
+import { useContext, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { AuthContext } from "src/context/AuthContext";
+import styles from "./page.module.css";
 
 type FormInput = {
   email: string;
