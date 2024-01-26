@@ -2,7 +2,7 @@ import prisma from "../../../../lib/db";
 
 import { Pessoa } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { Token, PasswordCrypto, Authentication } from "src/service/index";
+import { Authentication, PasswordCrypto, Token } from "src/service/index";
 
 export async function POST(req: NextRequest) {
   try {
@@ -47,7 +47,7 @@ export async function PUT(req: NextRequest) {
     let newData = data;
 
     if (newData.password) {
-      newData.password = await PasswordCrypto.hashPassword(newData.password)
+      newData.password = await PasswordCrypto.hashPassword(newData.password);
     }
 
     if (newData.password === "") {
@@ -56,16 +56,21 @@ export async function PUT(req: NextRequest) {
 
     const pessoa = await prisma.pessoa.update({
       where: { id: user.id },
-      data: { ...newData, isAdmin: undefined, id: undefined }
-    })
+      data: { ...newData, isAdmin: undefined, id: undefined },
+    });
 
     const cracha = await prisma.cracha.update({
       where: { pessoaId: user.id },
-      data: { verified: false }
-    })
+      data: { verified: false },
+    });
 
-    return NextResponse.json({ message: "OK", user: { pessoa: { ...pessoa, password: undefined }, cracha } }, { status: 200 });
-
+    return NextResponse.json(
+      {
+        message: "OK",
+        user: { pessoa: { ...pessoa, password: undefined }, cracha },
+      },
+      { status: 200 }
+    );
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
       return NextResponse.json(

@@ -1,18 +1,24 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
 type FormInput = {
-  name: string;
-  CPF: string;
-  email: string;
-  password: string;
-  passwordVerify: string;
-  role: string;
-  photoPath: string;
+  name?: string;
+  CPF?: string;
+  email?: string;
+  password?: string;
+  passwordVerify?: string;
+  role?: string;
+  photoPath?: string;
 };
+
+interface Props {
+  user: FormInput;
+}
 
 const toBase64 = (file: any) =>
   new Promise((resolve, reject) => {
@@ -22,8 +28,8 @@ const toBase64 = (file: any) =>
     reader.onerror = reject;
   });
 
-export default function Home() {
-  const { register, handleSubmit } = useForm<FormInput>();
+export default async function EditForm({ user }: Props) {
+  const { register, handleSubmit, setValue } = useForm<FormInput>();
   const router = useRouter();
 
   const verifyPhoto = async (data: any) => {
@@ -33,30 +39,38 @@ export default function Home() {
     return "";
   };
 
-  const handleRegister = async (data: FormInput) => {
-    const photoPath = await verifyPhoto(data.photoPath?.[0]);
+  const handleEdit = async (data: FormInput) => {
     if (data.password !== data.passwordVerify)
       alert("As senhas não estão iguais");
 
+    const photo = await verifyPhoto(data.photoPath?.[0]);
     const res = await fetch("http://localhost:3000/api/user", {
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify({
-        pessoa: { ...data, photoPath: undefined, passwordVerify: undefined },
-        cracha: { photoPath: photoPath },
+        ...data,
+        photoPath: undefined,
+        passwordVerify: undefined,
       }),
     });
 
     if (res.ok) {
-      router.push("/");
+      window.location.href = "/cracha";
     }
   };
+
+  useEffect(() => {
+    setValue("name", user.name as string);
+    setValue("CPF", user.CPF as string);
+    setValue("email", user.email as string);
+    setValue("role", user.role as string);
+  }, [setValue]);
 
   return (
     <>
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.card}>
-            <div className={styles.title}>Crie a sua conta</div>
+            <div className={styles.title}>Editar cadastro</div>
             <div className={styles.textfield}>
               <label>Nome completo</label>
               <input type="text" placeholder="Usuário" {...register("name")} />
@@ -105,9 +119,15 @@ export default function Home() {
           <div className={styles.action}>
             <button
               className={styles.btnLogin}
-              onClick={() => handleSubmit(handleRegister)()}
+              onClick={() => handleSubmit(handleEdit)()}
             >
-              Criar conta
+              Enviar
+            </button>
+            <button
+              className={styles.btnLogin}
+              onClick={() => router.push("/cracha")}
+            >
+              Cancelar
             </button>
           </div>
         </div>
