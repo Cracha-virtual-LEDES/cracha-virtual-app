@@ -41,8 +41,8 @@ export default function Home() {
   }, [isAuthenticaded, user, setValue]);
 
   const verifyPhoto = async (data: any) => {
-    if (data !== undefined) {
-      return await toBase64(data[0]);
+    if (data !== undefined && data !== null) {
+      return await toBase64(data);
     }
     return "";
   };
