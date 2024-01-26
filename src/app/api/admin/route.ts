@@ -26,16 +26,11 @@ export async function GET(req: NextRequest) {
 
         if (user.isAdmin) {
 
-            const pessoasNotVerified = await prisma.pessoa.findMany({
-                where: {
-                    cracha: {
-                        verified: false
-                    }
-                },
+            const pessoas = await prisma.pessoa.findMany({
                 select: { id: true, name: true, email: true, CPF: true, role: true, cracha: { select: { id: true, photoPath: true, verified: true, expirationDate: true } } }
             })
 
-            return NextResponse.json({ message: "OK", pessoasNotVerified }, { status: 200 });
+            return NextResponse.json({ message: "OK", pessoas }, { status: 200 });
         } else {
             return NextResponse.json({ message: "Not admin" }, { status: 403 });
         }
