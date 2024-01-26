@@ -24,12 +24,17 @@ const toBase64 = (file: any) =>
 
 // TODO: validar fomrulario
 export default function Home() {
-  // const { isAuthenticaded} = useContext(AuthContext);
   const { register, handleSubmit } = useForm<FormInput>();
 
+  const verifyPhoto = async (data: any) => {
+    if (data !== undefined && data !== null) {
+      return await toBase64(data);
+    }
+    return "";
+  };
+
   const handleRegister = async (data: FormInput) => {
-    console.log(data.photoPath);
-    const photoPath = await toBase64(data.photoPath[0]);
+    const photoPath = await verifyPhoto(data.photoPath?.[0]);
 
     await fetch("http://localhost:3000/api/user", {
       method: "POST",
@@ -42,10 +47,10 @@ export default function Home() {
 
   return (
     <>
-      <div className={styles.mainLogin}>
-        <div className={styles.rightLogin}>
-          <div className={styles.cardLogin}>
-            <h1>Cadastro</h1>
+      <div className={styles.container}>
+        <div className={styles.content}>
+          <div className={styles.card}>
+            <div className={styles.title}>Crie a sua conta</div>
             <div className={styles.textfield}>
               <label>Nome completo</label>
               <input type="text" placeholder="Usuário" {...register("name")} />
@@ -90,15 +95,14 @@ export default function Home() {
                 {...register("passwordVerify")}
               />
             </div>
+          </div>
+          <div className={styles.action}>
             <button
               className={styles.btnLogin}
               onClick={() => handleSubmit(handleRegister)()}
             >
-              Cadastrar
+              Criar conta
             </button>
-            <Link href="/" style={{ color: "white" }}>
-              Fazer login
-            </Link>
           </div>
         </div>
       </div>
