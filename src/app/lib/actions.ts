@@ -21,7 +21,7 @@ export interface IDataProps {
 
 export async function verifyUser() {
   const nextCookies = cookies();
-  const res = await fetch("http://localhost:3000/api/token", {
+  const res = await fetch(`${process.env.API_URL}/api/token`, {
     method: "GET",
     headers: { Cookie: nextCookies.toString() },
   });
@@ -37,7 +37,7 @@ export async function getData(): Promise<IDataProps[]> {
   await verifyUser();
 
   const nextCookies = cookies();
-  const res = await fetch("http://localhost:3000/api/admin", {
+  const res = await fetch(`${process.env.API_URL}/api/admin`, {
     method: "GET",
     headers: { Cookie: nextCookies.toString() },
   });
@@ -47,7 +47,7 @@ export async function getData(): Promise<IDataProps[]> {
 
 export async function getCrachaFromPessoa(): Promise<ICracha> {
   const nextCookies = cookies();
-  const res = await fetch("http://localhost:3000/api/cracha", {
+  const res = await fetch(`${process.env.API_URL}/api/cracha`, {
     method: "GET",
     headers: { Cookie: nextCookies.toString() },
     cache: "no-store",
@@ -61,7 +61,7 @@ export async function getCrachaFromPessoa(): Promise<ICracha> {
 
 export async function getUser() {
   const nextCookies = cookies();
-  const res = await fetch("http://localhost:3000/api/token", {
+  const res = await fetch(`${process.env.API_URL}/api/token`, {
     method: "GET",
     headers: { Cookie: nextCookies.toString() },
     cache: "no-store",
