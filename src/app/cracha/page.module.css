@@ -7,24 +7,11 @@
   align-items: center;
 }
 
-.leftLogin {
-  width: 50vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.leftLogin>h1 {
-  color: #77ffc0;
-  font-size: 2.5vw;
-}
-
 .rightLogin {
   width: 50vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -36,9 +23,53 @@
   align-items: center;
   flex-direction: column;
   padding: 30px 35px;
-  background: #2f2841;
+  background: #F9F9F9;
   border-radius: 20px;
   box-shadow: 0px 10px 40px #00000056;
+  position: relative;
+  overflow: hidden;
+}
+
+.blob {
+  background-image: url('../../../public/blob.svg');
+  top: 0;
+  width: 100%;
+  transform: translateY(-60%);
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+}
+
+.name{
+  font-size: 22px;
+  margin-bottom: 15px;
+  text-align: center;
+  z-index: 1;
+  color: #F9F9F9;
+}
+
+.verified{
+  margin: 50px;
+  gap: 6px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.title {
+  margin: 25px;
+  font-weight: bold;
+  font-size: 30px;
+  z-index: 1;
+  text-align: center;
+  color: #F9F9F9;
+}
+
+.action{
+  display: flex;
+  width: 100%;
 }
 
 .card>h1 {
@@ -47,51 +78,23 @@
   margin: 0;
 }
 
-.textfield {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  margin: 10px 0px;
-}
-
-.textfield>input {
-  width: 100%;
-  border: none;
-  border-radius: 10px;
-  padding: 15px;
-  background: #514869;
-  color: #f0ffffde;
-  font-size: 12pt;
-  box-shadow: 0px 10px 40px #00000056;
-  outline: none;
-  box-sizing: border-box;
-}
-
-.textfield>label {
-  color: #f0ffffde;
-  margin-bottom: 10px;
-}
-
-.textfield>input::placeholder {
-  color: #f0ffff94;
-}
-
 .btnLogin {
   width: 100%;
   padding: 16px 0;
   margin: 25px;
   border: none;
-  border-radius: 8px;
+  border-radius: 15px;
   outline: none;
   text-transform: uppercase;
-  font-weight: 800;
-  letter-spacing: 3px;
-  color: #2b134b;
-  background: #00ff88;
+  font-weight: 900;
+  color: #ffffff;
+  background: #0099CB;
   cursor: pointer;
-  box-shadow: 0px 10px 40px -12px #00ff8052;
+  box-shadow: 0px 10px 40px -12px #0095ff52;
+}
+
+.btnLogin:hover {
+  background: #06568e;
 }
 
 @media only screen and (max-width: 950px) {
