@@ -4,9 +4,14 @@ import { redirect } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import GridLoader from "react-spinners/GridLoader";
+import VerifiedIcon from "@mui/icons-material/Verified";
+import NewReleasesIcon from "@mui/icons-material/NewReleases";
+
+// import { Chip } from "@nextui-org/chip";
 
 import styles from "./page.module.css";
 import { AuthContext } from "src/context/AuthContext";
+import { Avatar, Chip } from "@mui/material";
 
 interface ICrachaProps {
   id: number;
@@ -32,6 +37,7 @@ export default function Cracha() {
       method: "GET",
     }).then((response) => {
       response.json().then((data) => {
+        console.log(data?.cracha);
         setCracha(data?.cracha);
         setLoading(false);
       });
@@ -62,15 +68,38 @@ export default function Cracha() {
         <div className={styles.main}>
           <div className={styles.rightLogin}>
             <div className={styles.card}>
-              <Image
-                src={cracha?.photoPath as string}
-                alt="foto-cracha"
-                width={80}
-                height={80}
+              <div className={styles.blob} />
+              <div className={styles.title}>Crachá Ledes</div>
+              <div className={styles.name}>{user?.name}</div>
+              <Avatar
+                src={cracha?.photoPath}
+                sx={{ width: 100, height: 100 }}
               />
-              <h1>{user?.name}</h1>
-              <h2>{user?.role}</h2>
-              <p>
+              <Chip
+                label={user?.role}
+                sx={{
+                  backgroundColor: "#0099CB",
+                  color: "#FFF",
+                  margin: "10px",
+                }}
+              />
+              <p>{user?.email}</p>
+              <div>
+                {cracha?.verified && (
+                  <div className={styles.verified}>
+                    Verificado
+                    <VerifiedIcon sx={{ color: "#00CB14" }} />
+                  </div>
+                )}
+                {!cracha?.verified && (
+                  <div className={styles.verified}>
+                    Verificado
+                    <NewReleasesIcon sx={{ color: "#A8A8A8" }} />
+                  </div>
+                )}
+              </div>
+              <div>
+                Validade:{" "}
                 {(() => {
                   const date = new Date(cracha?.expirationDate as string);
                   return `${date.getDate().toString().padStart(2, "0")}/${(
@@ -79,8 +108,9 @@ export default function Cracha() {
                     .toString()
                     .padStart(2, "0")}/${date.getFullYear()}`;
                 })()}
-              </p>
-              <h1>{cracha?.verified}</h1>
+              </div>
+            </div>
+            <div className={styles.action}>
               <button
                 className={styles.btnLogin}
                 // onClick={() => handleSubmit(handleRegister)()}
