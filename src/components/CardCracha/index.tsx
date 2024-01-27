@@ -44,7 +44,7 @@ export default async function CardCracha({ cracha, user }: Props) {
             {cracha?.verified && (
               <div className={styles.verified}>
                 Verificado
-                <VerifiedIcon sx={{ color: "#00CB14" }} />
+                <VerifiedIcon sx={{ color: "#0099CB" }} />
               </div>
             )}
             {!cracha?.verified && (
